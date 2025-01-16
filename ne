@@ -25,18 +25,25 @@ local UIShield = protectgui or (syn and syn.protect_gui) or (function() end);
 local rbxgui = cg:FindFirstChild("RobloxGui") or Instance.new("ScreenGui", cg)
 local altloaded = false
 function grn(length)
-    local charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+-=[]{}|;:',.<>?/"
+    local letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    local numbers = "0123456789"
+    local symbols = "!@#$%^&*()_+-=[]{}|;:',.<>?/"
+    local charset = letters .. numbers .. symbols
     local name = ""
-    for i = 1, length do
+    name = name .. letters:sub(math.random(1, #letters), math.random(1, #letters))
+    name = name .. numbers:sub(math.random(1, #numbers), math.random(1, #numbers))
+    name = name .. symbols:sub(math.random(1, #symbols), math.random(1, #symbols))
+    for i = 4, length do
         local rand = math.random(1, #charset)
         name = name .. charset:sub(rand, rand)
     end
+
     return name
 end
 local randomName = grn(20)
 if altloaded then
     for i, v in next, rbxgui:GetChildren() do
-        if v.Name == randomName then
+        if v.Name:find("%d") and v.Name:find("%W") and v.Name:find("%a") then
             v:Destroy()
         end
     end
@@ -46,7 +53,6 @@ if altloaded then
     altloaded = false
 end
 altloaded = true
-
 local screengui = Instance.new("ScreenGui", rbxgui)
 screengui.Name = randomName
 screengui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
@@ -154,24 +160,7 @@ end
 function library:ChangeBind(key)
 	CloseBind = key
 end
-function library:lines(state)
-    lineRight.Visible = state
-    lineTop.Visible = state
-    lineBottom.Visible = state
-    lineLeft.Visible = state
-end
 
-function library:setLineVisibility(lineName, state)
-    if lineName == "RightLine" then
-        lineRight.Visible = state
-    elseif lineName == "TopLine" then
-        lineTop.Visible = state
-    elseif lineName == "BottomLine" then
-        lineBottom.Visible = state
-    elseif lineName == "LeftLine" then
-        lineLeft.Visible = state
-    end
-end
 function library:Window(title, version, info, preset, closebind)
     CloseBind = closebind or Enum.KeyCode.Z
     PresetColor = preset or Color3.fromRGB(255, 0, 0)
@@ -185,43 +174,39 @@ function library:Window(title, version, info, preset, closebind)
     local DragFrame = Instance.new("Frame")
 	local close = Instance.new("ImageButton")
 
-    local lineRight = Instance.new("Frame", Main) -- Right Line
-    lineRight.Name = "RightLine"
-    lineRight.Position = UDim2.new(0.28, 0, 0.1, 5)
-    lineRight.Size = UDim2.new(0, 1, 0, 270)
-    lineRight.BackgroundColor3 = PresetColor
-    lineRight.BorderColor3 = PresetColor
-    lineRight.BorderSizePixel = 0
-    lineRight.Visible = false
-    
-    local lineTop = Instance.new("Frame", Main) --- Top Line
-    lineTop.Name = "TopLine"
-    lineTop.Position = UDim2.new(0.6, 18, -0.5, 1)
-    lineTop.Size = UDim2.new(0, 1, 1, 74)
-    lineTop.Rotation = 810
-    lineTop.BorderSizePixel = 0
-    lineTop.BorderColor3 = PresetColor
-    lineTop.BackgroundColor3 = PresetColor
-    lineTop.Visible = false
-    
-    local lineBottom = Instance.new("Frame", Main) --- Bottom Line
-    lineBottom.Name = "BottomLine"
-    lineBottom.Position = UDim2.new(0.6, 18, -0.5, 270)
-    lineBottom.Size = UDim2.new(0, 1, 1, 75)
-    lineBottom.Rotation = 810
-    lineBottom.BorderSizePixel = 0
-    lineBottom.BorderColor3 = PresetColor
-    lineBottom.BackgroundColor3 = PresetColor
-    lineBottom.Visible = false
-    
-    local lineLeft = Instance.new("Frame", Main) --- Left Line
-    lineLeft.Name = "LeftLine"
-    lineLeft.Position = UDim2.new(1, -10, 0.1, 5)
-    lineLeft.Size = UDim2.new(0, 1, 0, 270)
-    lineLeft.BorderSizePixel = 0
-    lineLeft.BorderColor3 = PresetColor
-    lineLeft.BackgroundColor3 = PresetColor
-    lineLeft.Visible = false
+    local line = Instance.new("Frame", Main) -- Right Line
+    line.Name = "Line"
+    line.Position = UDim2.new(0.28, 0, 0.1, 5)
+    line.Size = UDim2.new(0, 1, 0, 270)
+    line.BackgroundColor3 = PresetColor
+    line.BorderColor3 = PresetColor
+    line.BorderSizePixel = 0
+
+    local line2 = Instance.new("Frame", Main) --- top line
+    line2.Name = "Line"
+    line2.Position = UDim2.new(0.6, 18, -0.5, 1)
+    line2.Size = UDim2.new(0, 1, 1, 74)
+    line2.Rotation = 810
+    line2.BorderSizePixel = 0
+    line2.BorderColor3 = PresetColor
+    line2.BackgroundColor3 = PresetColor
+
+    local line3 = Instance.new("Frame", Main) --- Bottom
+    line3.Name = "Line"
+    line3.Position = UDim2.new(0.6, 18, -0.5, 270)
+    line3.Size = UDim2.new(0, 1, 1, 75)
+    line3.Rotation = 810
+    line3.BorderSizePixel = 0
+    line3.BorderColor3 = PresetColor
+    line3.BackgroundColor3 = PresetColor
+
+    local line4 = Instance.new("Frame", Main) --- Left
+    line4.Name = "Line"
+    line4.Position = UDim2.new(1, -10, 0.1, 5)
+    line4.Size = UDim2.new(0, 1, 0, 270)
+    line4.BorderSizePixel = 0
+    line4.BorderColor3 = PresetColor
+    line4.BackgroundColor3 = PresetColor
 
     Main.Name = "Main"
     Main.Parent = screengui
@@ -2041,5 +2026,4 @@ function library:Window(title, version, info, preset, closebind)
     end
     return tabhold
 end
-print("132")
 return library
