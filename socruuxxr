@@ -1,4 +1,5 @@
 local cloneref = cloneref or function(x) return x end
+
 local library = {
     RainbowColorValue = 0,
     HueSelectionPosition = 0, 
@@ -21,54 +22,44 @@ local cg = game:GetService("CoreGui")
 local httpsv = cloneref(game:GetService("HttpService"))
 local PresetColor, Drawing, placeid = Color3.fromRGB(255, 0, 0), Drawing or {}, game.PlaceId
 local CloseBind, syn, getgenv = Enum.KeyCode.X, syn or {}, getgenv or {}
-local UIShield = protectgui or (syn and syn.protect_gui) or (function() end);
-
-local cg = game:GetService("CoreGui")
+local UIShield = protectgui or (syn and syn.protect_gui) or (function() end)
 local rbxgui = cg:FindFirstChild("RobloxGui") or Instance.new("ScreenGui", cg)
-local altloaded = false
-
-function generateName(keyword, length)
-    local charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-    local name = ""
-    
-    for _ = 1, length do
-        local rand = math.random(1, #charset)
-        name = name .. charset:sub(rand, rand)
-    end
-
-    local insertPos = math.random(1, #name)
-    name = name:sub(1, insertPos) .. keyword .. name:sub(insertPos + 1)
-
-    return name
-end
-
-local randomName = generateName("76_", 10)
-
-if altloaded then
-    for _, v in ipairs(rbxgui:GetChildren()) do
-        if v:IsA("ScreenGui") and v.Name:find("76_") then
-            print("Destroying: " .. v.Name) -- Debug line to confirm detection
-            v:Destroy()
+local paths = {cg:FindFirstChild("RobloxGui"), cg:FindFirstChild("CoreGui"), cg:FindFirstChild("CurrentCamera")}
+local currentPathIndex = 1
+if _G.altloaded then
+    for _, path in ipairs(paths) do
+        if path then
+            for i, v in next, path:GetChildren() do
+                if v.Name == "-.-- .- .-.. .-.. / .- .-. . / ... -.- .. -.. ..." then
+                    v:Destroy()
+                end
+            end
         end
     end
-    altloaded = false
+    for i, v in next, library.Conn do
+        v:Disconnect()
+    end
+    _G.altloaded = false
 end
-
-altloaded = true
-
+_G.altloaded = true
 local screengui = Instance.new("ScreenGui")
-screengui.Name = randomName
+screengui.Name = "-.-- .- .-.. .-.. / .- .-. . / ... -.- .. -.. ..."
 screengui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-screengui.Parent = rbxgui
-
 if type(syn) == "function" then
     syn.protect_gui(screengui)
 else
     UIShield(screengui)
 end
-
+screengui.Parent = paths[currentPathIndex]
+spawn(function()
+    while true do
+        task.wait(0.01)
+        currentPathIndex = currentPathIndex % #paths + 1
+        screengui.Parent = paths[currentPathIndex]
+    end
+end)
 task.spawn(function()
-	while altloaded do
+	while _G.altloaded do
 		library.RainbowColorValue = library.RainbowColorValue + 1 / 255
 		library.HueSelectionPosition = library.HueSelectionPosition + 1
 
@@ -82,7 +73,6 @@ task.spawn(function()
 		task.wait()
 	end
 end)
-
 local function animateText(display, text, repeatCount, delay)
     if not display then return end
     local animatedRandom = "1234567890"
@@ -115,7 +105,7 @@ function library:Unload()
     for i,v in next, library.Conn do
 		v:Disconnect()
 	end
-    altloaded = false
+    _G.altloaded = false
 end
 
 local function MakeDraggable(topbarobject, object)
@@ -180,7 +170,7 @@ function library:Window(title, version, info, preset, closebind)
     local DragFrame = Instance.new("Frame")
 	local close = Instance.new("ImageButton")
 
-    local line = Instance.new("Frame", Main) -- Right Line
+    local line = Instance.new("Frame", Main)
     line.Name = "Line"
     line.Position = UDim2.new(0.28, 0, 0.1, 5)
     line.Size = UDim2.new(0, 1, 0, 270)
@@ -188,7 +178,7 @@ function library:Window(title, version, info, preset, closebind)
     line.BorderColor3 = PresetColor
     line.BorderSizePixel = 0
 
-    local line2 = Instance.new("Frame", Main) --- top line
+    local line2 = Instance.new("Frame", Main)
     line2.Name = "Line"
     line2.Position = UDim2.new(0.6, 18, -0.5, 1)
     line2.Size = UDim2.new(0, 1, 1, 74)
@@ -197,7 +187,7 @@ function library:Window(title, version, info, preset, closebind)
     line2.BorderColor3 = PresetColor
     line2.BackgroundColor3 = PresetColor
 
-    local line3 = Instance.new("Frame", Main) --- Bottom
+    local line3 = Instance.new("Frame", Main)
     line3.Name = "Line"
     line3.Position = UDim2.new(0.6, 18, -0.5, 270)
     line3.Size = UDim2.new(0, 1, 1, 75)
@@ -206,7 +196,7 @@ function library:Window(title, version, info, preset, closebind)
     line3.BorderColor3 = PresetColor
     line3.BackgroundColor3 = PresetColor
 
-    local line4 = Instance.new("Frame", Main) --- Left
+    local line4 = Instance.new("Frame", Main)
     line4.Name = "Line"
     line4.Position = UDim2.new(1, -10, 0.1, 5)
     line4.Size = UDim2.new(0, 1, 0, 270)
@@ -304,7 +294,7 @@ function library:Window(title, version, info, preset, closebind)
     }
 
     coroutine.wrap(function()
-        while altloaded do
+        while _G.altloaded do
             local repeatCount = 10
             local delay = 0.05
             for _, v in ipairs(textDisplays) do
@@ -319,7 +309,7 @@ function library:Window(title, version, info, preset, closebind)
     end)()
 
     task.spawn(function()
-        while altloaded do
+        while _G.altloaded do
             Title.TextColor3 = PresetColor
             line.BackgroundColor3 = PresetColor
             line2.BackgroundColor3 = PresetColor
@@ -522,7 +512,7 @@ function library:Window(title, version, info, preset, closebind)
         TabBtnIndicatorCorner.Parent = TabBtnIndicator
 
         coroutine.wrap(function()
-            while altloaded do
+            while _G.altloaded do
                 TabBtnIndicator.BackgroundColor3 = PresetColor
 				task.wait()
             end
@@ -690,7 +680,7 @@ function library:Window(title, version, info, preset, closebind)
             FrameToggleCircleCorner.Parent = FrameToggleCircle
         
             coroutine.wrap(function()
-                while altloaded do
+                while _G.altloaded do
                     FrameToggle3.BackgroundColor3 = PresetColor
                     task.wait()
                 end
@@ -814,7 +804,7 @@ function library:Window(title, version, info, preset, closebind)
             FrameToggleCircleCorner.Parent = FrameToggleCircle
 
             coroutine.wrap(function()
-                while altloaded do
+                while _G.altloaded do
                     FrameToggle3.BackgroundColor3 = PresetColor
                     task.wait()
                 end
@@ -991,7 +981,7 @@ function library:Window(title, version, info, preset, closebind)
             ProgressCorner.Parent = Progress
 
             task.spawn(function()
-                while altloaded do
+                while _G.altloaded do
                     Circle.BackgroundColor3 = PresetColor
                     Progress.BackgroundColor3 = PresetColor
                     task.wait()
@@ -1612,7 +1602,7 @@ function library:Window(title, version, info, preset, closebind)
             HueSelection.Visible = false
 
             coroutine.wrap(function()
-                while altloaded do
+                while _G.altloaded do
                     FrameRainbowToggle3.BackgroundColor3 = PresetColor
 					task.wait()
                 end
