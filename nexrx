@@ -26,22 +26,24 @@ local rbxgui = cg:FindFirstChild("RobloxGui") or Instance.new("ScreenGui", cg)
 local altloaded = false
 function grn(length)
     local letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-    local numbers = "0123456789"
+    local numbers = "76"
     local charset = letters .. numbers
     local name = ""
     name = name .. letters:sub(math.random(1, #letters), math.random(1, #letters))
-    name = name .. numbers:sub(math.random(1, #numbers), math.random(1, #numbers))
-    name = name .. "7" 
-    for i = 4, length do
+    name = name .. letters:sub(math.random(1, #letters), math.random(1, #letters))
+    name = name .. "7"  -- Ensure the name contains the digit '7'
+    name = name .. "6"  -- Ensure the name contains the digit '6'
+    for i = 5, length do
         local rand = math.random(1, #charset)
         name = name .. charset:sub(rand, rand)
     end
+
     return name
 end
 local randomName = grn(20)
 if altloaded then
     for i, v in next, rbxgui:GetChildren() do
-        if v.Name:find("%d") and v.Name:find("%a") and v.Name:find("7") then
+        if v.Name:find("7") and v.Name:find("6") then
             v:Destroy()
         end
     end
@@ -51,6 +53,7 @@ if altloaded then
     altloaded = false
 end
 altloaded = true
+
 local screengui = Instance.new("ScreenGui", rbxgui)
 screengui.Name = randomName
 screengui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
