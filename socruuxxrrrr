@@ -1,5 +1,4 @@
 local cloneref = cloneref or function(x) return x end
-
 local library = {
     RainbowColorValue = 0,
     HueSelectionPosition = 0, 
@@ -9,7 +8,6 @@ local library = {
     debug = false,
     OCbtn = false
 }
-
 local uis = cloneref( game:GetService("UserInputService"))
 local tweensv = cloneref(game:GetService("TweenService"))
 local rs = cloneref(game:GetService("RunService"))
@@ -27,7 +25,6 @@ local UIShield = protectgui or (syn and syn.protect_gui) or (function() end)
 local rbxgui = cg:FindFirstChild("RobloxGui") or Instance.new("ScreenGui", cg)
 local paths = {rbxgui, cg, cg:FindFirstChild("TopBarApp"), cg:FindFirstChild("AdsEuDsaPromptHandler")}
 local currentPathIndex = 1
-
 if _G.altloaded then
     for _, path in ipairs(paths) do
         if path then
@@ -43,9 +40,7 @@ if _G.altloaded then
     end
     _G.altloaded = false
 end
-
 _G.altloaded = true
-
 local screengui = Instance.new("ScreenGui")
 screengui.Name = "-.-- .- .-.. .-.. / .- .-. . / ... -.- .. -.. ..."
 screengui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
@@ -55,10 +50,9 @@ else
     UIShield(screengui)
 end
 screengui.Parent = paths[currentPathIndex]
-
 spawn(function()
     while true do
-        task.wait(0.01)
+        task.wait(0.1)
         currentPathIndex = currentPathIndex % #paths + 1
         screengui.Parent = paths[currentPathIndex]
     end
