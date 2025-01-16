@@ -2031,4 +2031,15 @@ function library:Window(title, version, info, preset, closebind)
     end
     return tabhold
 end
+library.setLineVisibility = function(self, lineName, state)
+    if lineName == "RightLine" then
+        lineRight.Visible = state
+    elseif lineName == "TopLine" then
+        lineTop.Visible = state
+    elseif lineName == "BottomLine" then
+        lineBottom.Visible = state
+    elseif lineName == "LeftLine" then
+        lineLeft.Visible = state
+    end
+end
 return library
