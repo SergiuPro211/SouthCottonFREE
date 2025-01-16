@@ -175,6 +175,7 @@ function library:Window(title, version, info, preset, closebind)
     lineRight.BackgroundColor3 = PresetColor
     lineRight.BorderColor3 = PresetColor
     lineRight.BorderSizePixel = 0
+    lineRight.Visible = false
 
     local lineTop = Instance.new("Frame", Main) --- Top Line
     lineTop.Name = "TopLine"
@@ -184,6 +185,7 @@ function library:Window(title, version, info, preset, closebind)
     lineTop.BorderSizePixel = 0
     lineTop.BorderColor3 = PresetColor
     lineTop.BackgroundColor3 = PresetColor
+    lineTop.Visible = false
 
     local lineBottom = Instance.new("Frame", Main) --- Bottom Line
     lineBottom.Name = "BottomLine"
@@ -193,6 +195,7 @@ function library:Window(title, version, info, preset, closebind)
     lineBottom.BorderSizePixel = 0
     lineBottom.BorderColor3 = PresetColor
     lineBottom.BackgroundColor3 = PresetColor
+    lineBottom.Visible = false
 
     local lineLeft = Instance.new("Frame", Main) --- Left Line
     lineLeft.Name = "LeftLine"
@@ -201,7 +204,9 @@ function library:Window(title, version, info, preset, closebind)
     lineLeft.BorderSizePixel = 0
     lineLeft.BorderColor3 = PresetColor
     lineLeft.BackgroundColor3 = PresetColor
-    function library:hidelines(state)
+    lineLeft.Visible = false
+
+    function library:LinesStatus(state)
         lineRight.Visible = state
         lineTop.Visible = state
         lineBottom.Visible = state
