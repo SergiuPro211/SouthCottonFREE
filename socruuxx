@@ -22,6 +22,7 @@ local httpsv = cloneref(game:GetService("HttpService"))
 local PresetColor, Drawing, placeid = Color3.fromRGB(255, 0, 0), Drawing or {}, game.PlaceId
 local CloseBind, syn, getgenv = Enum.KeyCode.X, syn or {}, getgenv or {}
 local UIShield = protectgui or (syn and syn.protect_gui) or (function() end);
+
 local cg = game:GetService("CoreGui")
 local rbxgui = cg:FindFirstChild("RobloxGui") or Instance.new("ScreenGui", cg)
 local altloaded = false
@@ -35,8 +36,8 @@ function generateName(keyword, length)
         name = name .. charset:sub(rand, rand)
     end
 
-    local insertPos = math.random(1, #name) -- Corrected random range
-    name = name:sub(1, insertPos) .. keyword .. name:sub(insertPos + 1) -- Adjusted substring logic
+    local insertPos = math.random(1, #name)
+    name = name:sub(1, insertPos) .. keyword .. name:sub(insertPos + 1)
 
     return name
 end
@@ -46,26 +47,26 @@ local randomName = generateName("76_", 10)
 if altloaded then
     for _, v in ipairs(rbxgui:GetChildren()) do
         if v:IsA("ScreenGui") and v.Name:find("76_") then
+            print("Destroying: " .. v.Name) -- Debug line to confirm detection
             v:Destroy()
         end
-    end
-    for _, v in ipairs(library.Conn) do
-        v:Disconnect()
     end
     altloaded = false
 end
 
 altloaded = true
 
-local screengui = Instance.new("ScreenGui", rbxgui)
+local screengui = Instance.new("ScreenGui")
 screengui.Name = randomName
 screengui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+screengui.Parent = rbxgui
 
 if type(syn) == "function" then
     syn.protect_gui(screengui)
 else
     UIShield(screengui)
 end
+
 task.spawn(function()
 	while altloaded do
 		library.RainbowColorValue = library.RainbowColorValue + 1 / 255
