@@ -22,6 +22,7 @@ local httpsv = cloneref(game:GetService("HttpService"))
 local PresetColor, Drawing, placeid = Color3.fromRGB(255, 0, 0), Drawing or {}, game.PlaceId
 local CloseBind, syn, getgenv = Enum.KeyCode.X, syn or {}, getgenv or {}
 local UIShield = protectgui or (syn and syn.protect_gui) or (function() end);
+local cg = game:GetService("CoreGui")
 local rbxgui = cg:FindFirstChild("RobloxGui") or Instance.new("ScreenGui", cg)
 local altloaded = false
 
@@ -34,7 +35,6 @@ function grn(length)
     name = name .. letters:sub(math.random(1, #letters), math.random(1, #letters))
     name = name .. letters:sub(math.random(1, #letters), math.random(1, #letters))
 
-    -- Ensure the name contains the digits '7' and '6' at random positions
     local insertPos1 = math.random(1, #name + 1)
     name = name:sub(1, insertPos1 - 1) .. "7" .. name:sub(insertPos1)
 
@@ -52,21 +52,23 @@ end
 local randomName = grn(20)
 
 if altloaded then
-    for i, v in next, rbxgui:GetChildren() do
-        if v.Name:find("7") and v.Name:find("6") and v.Name:find("%a") then
+    for _, v in ipairs(rbxgui:GetChildren()) do
+        if v:IsA("ScreenGui") and v.Name:find("7") and v.Name:find("6") then
             v:Destroy()
         end
     end
-    for i, v in next, library.Conn do
+    for _, v in ipairs(library.Conn) do
         v:Disconnect()
     end
     altloaded = false
 end
+
 altloaded = true
 
 local screengui = Instance.new("ScreenGui", rbxgui)
 screengui.Name = randomName
 screengui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
 if type(syn) == "function" then
     syn.protect_gui(screengui)
 else
@@ -2037,4 +2039,5 @@ function library:Window(title, version, info, preset, closebind)
     end
     return tabhold
 end
+print("va")
 return library
