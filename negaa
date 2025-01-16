@@ -155,100 +155,121 @@ function library:ChangeBind(key)
 	CloseBind = key
 end
 
-CloseBind = closebind or Enum.KeyCode.Z
-PresetColor = preset or Color3.fromRGB(255, 0, 0)
-fs = false
-local Main = Instance.new("Frame")
-local TabHold = Instance.new("Frame")
+function library:Window(title, version, info, preset, closebind)
+    CloseBind = closebind or Enum.KeyCode.Z
+    PresetColor = preset or Color3.fromRGB(255, 0, 0)
+    fs = false
+    local Main = Instance.new("Frame")
+    local TabHold = Instance.new("Frame")
 
-local TabHoldLayout = Instance.new("UIListLayout")
-local Title = Instance.new("TextLabel")
-local TabFolder = Instance.new("Folder")
-local DragFrame = Instance.new("Frame")
-local close = Instance.new("ImageButton")
-local lines = {}
-function createLine(name, parent, position, size, rotation)
-    local line = Instance.new("Frame", parent)
-    line.Name = name
-    line.Position = position
-    line.Size = size
-    line.Rotation = rotation or 0
-    line.BackgroundColor3 = PresetColor
-    line.BorderColor3 = PresetColor
-    line.BorderSizePixel = 0
-    lines[name] = line
-    return line
-end
-createLine("RightLine", Main, UDim2.new(0.28, 0, 0.1, 5), UDim2.new(0, 1, 0, 270))
-createLine("TopLine", Main, UDim2.new(0.6, 18, -0.5, 1), UDim2.new(0, 1, 1, 74), 810)
-createLine("BottomLine", Main, UDim2.new(0.6, 18, -0.5, 270), UDim2.new(0, 1, 1, 75), 810)
-createLine("LeftLine", Main, UDim2.new(1, -10, 0.1, 5), UDim2.new(0, 1, 0, 270))
-function setLineVisibility(lineName, visible)
-    if lines[lineName] then
-        lines[lineName].Visible = visible
+    local TabHoldLayout = Instance.new("UIListLayout")
+    local Title = Instance.new("TextLabel")
+    local TabFolder = Instance.new("Folder")
+    local DragFrame = Instance.new("Frame")
+	local close = Instance.new("ImageButton")
+
+    local lineRight = Instance.new("Frame", Main) -- Right Line
+    lineRight.Name = "RightLine"
+    lineRight.Position = UDim2.new(0.28, 0, 0.1, 5)
+    lineRight.Size = UDim2.new(0, 1, 0, 270)
+    lineRight.BackgroundColor3 = PresetColor
+    lineRight.BorderColor3 = PresetColor
+    lineRight.BorderSizePixel = 0
+
+    local lineTop = Instance.new("Frame", Main) --- Top Line
+    lineTop.Name = "TopLine"
+    lineTop.Position = UDim2.new(0.6, 18, -0.5, 1)
+    lineTop.Size = UDim2.new(0, 1, 1, 74)
+    lineTop.Rotation = 810
+    lineTop.BorderSizePixel = 0
+    lineTop.BorderColor3 = PresetColor
+    lineTop.BackgroundColor3 = PresetColor
+
+    local lineBottom = Instance.new("Frame", Main) --- Bottom Line
+    lineBottom.Name = "BottomLine"
+    lineBottom.Position = UDim2.new(0.6, 18, -0.5, 270)
+    lineBottom.Size = UDim2.new(0, 1, 1, 75)
+    lineBottom.Rotation = 810
+    lineBottom.BorderSizePixel = 0
+    lineBottom.BorderColor3 = PresetColor
+    lineBottom.BackgroundColor3 = PresetColor
+
+    local lineLeft = Instance.new("Frame", Main) --- Left Line
+    lineLeft.Name = "LeftLine"
+    lineLeft.Position = UDim2.new(1, -10, 0.1, 5)
+    lineLeft.Size = UDim2.new(0, 1, 0, 270)
+    lineLeft.BorderSizePixel = 0
+    lineLeft.BorderColor3 = PresetColor
+    lineLeft.BackgroundColor3 = PresetColor
+    function library:hidelines(state)
+        lineRight.Visible = state
+        lineTop.Visible = state
+        lineBottom.Visible = state
+        lineLeft.Visible = state
     end
-end
-Main.Name = "Main"
-Main.Parent = screengui
-Main.AnchorPoint = Vector2.new(0.5, 0.5)
-Main.BackgroundColor3 = Color3.fromRGB(1, 1, 1)
-Main.BorderSizePixel = 0
-Main.Position = UDim2.new(0.5, 0, 0.5, 0)
-Main.Size = UDim2.new(0, 560, 0, 319)
-Main.ClipsDescendants = false
-Main.Visible = true
 
-local boframe = Instance.new("Frame", Main)
-boframe.Name = "BorderFrame"
-boframe.AnchorPoint = Vector2.new(0.5, 0.5)
-boframe.Position = UDim2.new(0.5, 0, 0.5, 0)
-boframe.Size = UDim2.new(1, 20, 1, 20)
-boframe.BackgroundTransparency = 1
-boframe.ZIndex = 0
-boframe.ClipsDescendants = false
+    Main.Name = "Main"
+    Main.Parent = screengui
+    Main.AnchorPoint = Vector2.new(0.5, 0.5)
+    Main.BackgroundColor3 = Color3.fromRGB(1, 1, 1)
+    Main.BorderSizePixel = 0
+    Main.Position = UDim2.new(0.5, 0, 0.5, 0)
+    Main.Size = UDim2.new(0, 560, 0, 319)
+    Main.ClipsDescendants = false
+    Main.Visible = true
 
-local img1 = Instance.new("ImageLabel", boframe)
-img1.Name = "TopShadow"
-img1.Image = "rbxassetid://5587865193"
-img1.ImageColor3 = Color3.fromRGB(0, 0, 0)
-img1.AnchorPoint = Vector2.new(0.5, 0.5)
-img1.Position = UDim2.new(0.5, 0, 0.5, 0)
-img1.Size = UDim2.new(1.6, 0, 1.4, 0)
-img1.BackgroundTransparency = 1
-img1.ZIndex = 7
+    local boframe = Instance.new("Frame", Main)
+    boframe.Name = "BorderFrame"
+    boframe.AnchorPoint = Vector2.new(0.5, 0.5)
+    boframe.Position = UDim2.new(0.5, 0, 0.5, 0)
+    boframe.Size = UDim2.new(1, 20, 1, 20)
+    boframe.BackgroundTransparency = 1
+    boframe.ZIndex = 0
+    boframe.ClipsDescendants = false
 
-local img2 = Instance.new("ImageLabel", boframe)
-img2.Name = "BottomShadow"
-img2.Image = "rbxassetid://5587865193"
-img2.ImageColor3 = Color3.fromRGB(0, 0, 0)
-img2.AnchorPoint = Vector2.new(0.5, 0.5)
-img2.Position = UDim2.new(0.5, 0, 0.5, 0)
-img2.Size = UDim2.new(1.6, 0, 1.4, 0)
-img2.BackgroundTransparency = 1
-img2.ZIndex = 7
+    local img1 = Instance.new("ImageLabel", boframe)
+    img1.Name = "TopShadow"
+    img1.Image = "rbxassetid://5587865193"
+    img1.ImageColor3 = Color3.fromRGB(0, 0, 0)
+    img1.AnchorPoint = Vector2.new(0.5, 0.5)
+    img1.Position = UDim2.new(0.5, 0, 0.5, 0)
+    img1.Size = UDim2.new(1.6, 0, 1.4, 0)
+    img1.BackgroundTransparency = 1
+    img1.ZIndex = 7
 
-local FadeBackgroundFrame = Instance.new("Frame")
+    local img2 = Instance.new("ImageLabel", boframe)
+    img2.Name = "BottomShadow"
+    img2.Image = "rbxassetid://5587865193"
+    img2.ImageColor3 = Color3.fromRGB(0, 0, 0)
+    img2.AnchorPoint = Vector2.new(0.5, 0.5)
+    img2.Position = UDim2.new(0.5, 0, 0.5, 0)
+    img2.Size = UDim2.new(1.6, 0, 1.4, 0)
+    img2.BackgroundTransparency = 1
+    img2.ZIndex = 7
 
-FadeBackgroundFrame.Name = "FadeBackgroundFrame"
-FadeBackgroundFrame.Parent = Main
-FadeBackgroundFrame.BackgroundColor3 = Color3.fromRGB(27, 27, 27)
-FadeBackgroundFrame.BackgroundTransparency = 1.000
-FadeBackgroundFrame.BorderSizePixel = 0
-FadeBackgroundFrame.Size = UDim2.new(1, 0, 1, 0)
-FadeBackgroundFrame.ZIndex = 3
+    local FadeBackgroundFrame = Instance.new("Frame")
 
-close.Name = "close"
-close.Parent = Main
-close.BackgroundTransparency = 1.000
-close.Position = UDim2.new(0.94, 0, 0.01, 8)
-close.Size = UDim2.new(0, 21, 0, 21)
-close.ZIndex = 2
-close.Image = "rbxassetid://3926305904"
-close.ImageRectOffset = Vector2.new(284, 4)
-close.ImageRectSize = Vector2.new(24, 24)
-close.MouseButton1Click:Connect(function()
-    Main.Visible = false
-end)
+	FadeBackgroundFrame.Name = "FadeBackgroundFrame"
+	FadeBackgroundFrame.Parent = Main
+	FadeBackgroundFrame.BackgroundColor3 = Color3.fromRGB(27,27, 27)
+	FadeBackgroundFrame.BackgroundTransparency = 1.000
+	FadeBackgroundFrame.BorderSizePixel = 0
+	FadeBackgroundFrame.Size = UDim2.new(1, 0, 1, 0)
+	FadeBackgroundFrame.ZIndex = 3
+
+	close.Name = "close"
+    close.Parent = Main
+    close.BackgroundTransparency = 1.000
+    close.Position = UDim2.new(0.94, 0, 0.01, 8)
+    close.Size = UDim2.new(0, 21, 0, 21)
+    close.ZIndex = 2
+    close.Image = "rbxassetid://3926305904"
+    close.ImageRectOffset = Vector2.new(284, 4)
+    close.ImageRectSize = Vector2.new(24, 24)
+    close.MouseButton1Click:Connect(function()
+        Main.Visible = false
+    end)
+
     TabHold.Name = "TabHold"
     TabHold.Parent = Main
     TabHold.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -2000,9 +2021,9 @@ end)
                     end
                 end
             end)
-    return tabcontent
+        end
+        return tabcontent
+    end
+    return tabhold
 end
-return tabhold
-end
-library.setLineVisibility = setLineVisibility
 return library
