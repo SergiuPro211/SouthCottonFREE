@@ -206,7 +206,7 @@ function library:Window(title, version, info, preset, closebind)
     lineLeft.BackgroundColor3 = PresetColor
     lineLeft.Visible = false
 
-    function library:LinesStatus(state)
+    function library:lines(state)
         lineRight.Visible = state
         lineTop.Visible = state
         lineBottom.Visible = state
