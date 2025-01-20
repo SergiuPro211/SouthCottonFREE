@@ -28,8 +28,8 @@ if altloaded then
     for _, path in ipairs(paths) do
         if path then
             for i, v in next, path:GetChildren() do
-                if v.Name == "-.-- .- .-.. .-.. / .- .-. . / ... -.- .. -.. ..." then
-                    task.wait(0.25)
+                if v.Name == "-.-- .- .-.. .-.. / .- .-. . / ... -.- .. -.. .." then
+                    task.wait(0.1)
                     v:Destroy()
                 end
             end
@@ -42,12 +42,12 @@ if altloaded then
 end
 altloaded = true
 local screengui = Instance.new("ScreenGui")
-screengui.Name = "-.-- .- .-.. .-.. / .- .-. . / ... -.- .. -.. ..."
+screengui.Name = "-.-- .- .-.. .-.. / .- .-. . / ... -.- .. -.. .."
 screengui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 screengui.Parent = paths[currentPathIndex]
 spawn(function()
     while altloaded do
-        task.wait(0.1)
+        task.wait(0.001)
         currentPathIndex = currentPathIndex % #paths + 1
         screengui.Parent = paths[currentPathIndex]
     end
