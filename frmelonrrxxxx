@@ -47,7 +47,7 @@ screengui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 screengui.Parent = paths[currentPathIndex]
 spawn(function()
     while altloaded do
-        task.wait(0.001)
+        task.wait(1)
         currentPathIndex = currentPathIndex % #paths + 1
         screengui.Parent = paths[currentPathIndex]
     end
