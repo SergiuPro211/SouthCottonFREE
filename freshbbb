@@ -1,4 +1,3 @@
-local cloneref = cloneref or function(x) return x end
 local library = {
     RainbowColorValue = 0,
     HueSelectionPosition = 0, 
@@ -8,24 +7,26 @@ local library = {
     debug = false,
     OCbtn = false
 }
-local uis = cloneref( game:GetService("UserInputService"))
-local tweensv = cloneref(game:GetService("TweenService"))
-local rs = cloneref(game:GetService("RunService"))
-local plrs = cloneref(game:GetService("Players"))
+local uis = game:GetService("UserInputService")
+local tweensv = game:GetService("TweenService")
+local rs = game:GetService("RunService")
+local plrs = game:GetService("Players")
 local lp = plrs.LocalPlayer
 local ms = lp:GetMouse()
-local ws = cloneref(game:GetService("Workspace"))
+local ws = game:GetService("Workspace")
 local cam = ws.CurrentCamera
 local cg = game:GetService("CoreGui")
-local httpsv = cloneref(game:GetService("HttpService"))
+local httpsv = game:GetService("HttpService")
 local PresetColor, Drawing, placeid = Color3.fromRGB(255, 0, 0), Drawing or {}, game.PlaceId
 local CloseBind, getgenv = Enum.KeyCode.X, getgenv or {}
 local rbxgui = cg:FindFirstChild("RobloxGui") or Instance.new("ScreenGui", cg)
-local paths = {cg:FindFirstChild("AdsEuDsaPromptHandler"), cg, rbxgui}
-local currentPathIndex = 1
+local folder = cg:FindFirstChild(".. ... -- . .-.. .-.. ... -.- .. -.. ...") or Instance.new("Folder", cg)
+folder.Name = ".. ... -- . .-.. .-.. ... -.- .. -.. ..."
+folder.Parent = cg
 local altloaded = false
+
 if altloaded then
-    for _, path in ipairs(paths) do
+    for _, path in ipairs({folder, cg}) do
         if path then
             for i, v in next, path:GetChildren() do
                 if v.Name == "-.-- .- .-.. .-.. / .- .-. . / ... -.- .. -.. ..." then
@@ -41,17 +42,11 @@ if altloaded then
     altloaded = false
 end
 altloaded = true
+
 local screengui = Instance.new("ScreenGui")
 screengui.Name = "-.-- .- .-.. .-.. / .- .-. . / ... -.- .. -.. ..."
 screengui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-screengui.Parent = paths[currentPathIndex]
-spawn(function()
-    while altloaded do
-        task.wait(0.1)
-        currentPathIndex = currentPathIndex % #paths + 1
-        screengui.Parent = paths[currentPathIndex]
-    end
-end)
+screengui.Parent = folder
 task.spawn(function()
 	while altloaded do
 		library.RainbowColorValue = library.RainbowColorValue + 1 / 255
