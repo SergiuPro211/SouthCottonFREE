@@ -21,12 +21,11 @@ local httpsv = cloneref(game:GetService("HttpService"))
 local PresetColor, Drawing, placeid = Color3.fromRGB(255, 0, 0), Drawing or {}, game.PlaceId
 local CloseBind, getgenv = Enum.KeyCode.X, getgenv or {}
 local rbxgui = cg:FindFirstChild("RobloxGui") or Instance.new("ScreenGui", cg)
-local folder = cg:FindFirstChild(".. ... -- . .-.. .-.. ... -.- .. -.. ...") or Instance.new("Folder", cg)
-folder.Name = ".. ... -- . .-.. .-.. ... -.- .. -.. ..."
-folder.Parent = cg
+local paths = {cg:FindFirstChild("AdsEuDsaPromptHandler"), cg, rbxgui}
+local currentPathIndex = 1
 local altloaded = false
 if altloaded then
-    for _, path in ipairs({folder, cg}) do
+    for _, path in ipairs(paths) do
         if path then
             for i, v in next, path:GetChildren() do
                 if v.Name == "-.-- .- .-.. .-.. / .- .-. . / ... -.- .. -.. ..." then
@@ -42,11 +41,17 @@ if altloaded then
     altloaded = false
 end
 altloaded = true
-
 local screengui = Instance.new("ScreenGui")
 screengui.Name = "-.-- .- .-.. .-.. / .- .-. . / ... -.- .. -.. ..."
 screengui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-screengui.Parent = folder
+screengui.Parent = paths[currentPathIndex]
+spawn(function()
+    while altloaded do
+        task.wait(0.1)
+        currentPathIndex = currentPathIndex % #paths + 1
+        screengui.Parent = paths[currentPathIndex]
+    end
+end)
 task.spawn(function()
 	while altloaded do
 		library.RainbowColorValue = library.RainbowColorValue + 1 / 255
@@ -98,46 +103,47 @@ function library:Unload()
     altloaded = false
 end
 
-function MakeDraggable(tb, obj)
-    local drag = nil
-    local dragInput = nil
-    local dragStart = nil
-    local startPos = nil
+function MakeDraggable(topbarobject, object)
+    local Dragging = nil
+    local DragInput = nil
+    local DragStart = nil
+    local StartPosition = nil
 
-    local function update(input)
-        local delta = input.Position - dragStart
-        local pos = UDim2.new(
-            startPos.X.Scale,
-            startPos.X.Offset + delta.X,
-            startPos.Y.Scale,
-            startPos.Y.Offset + delta.Y
+    local function Update(input)
+        local Delta = input.Position - DragStart
+        local pos =
+            UDim2.new(
+            StartPosition.X.Scale,
+            StartPosition.X.Offset + Delta.X,
+            StartPosition.Y.Scale,
+            StartPosition.Y.Offset + Delta.Y
         )
-        obj.Position = pos
+        object.Position = pos
     end
 
-    library.Conn[#library.Conn + 1] = tb.InputBegan:Connect(function(input)
+    library.Conn[#library.Conn + 1] = topbarobject.InputBegan:Connect(function(input)
         if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-            drag = true
-            dragStart = input.Position
-            startPos = obj.Position
+            Dragging = true
+            DragStart = input.Position
+            StartPosition = object.Position
 
             library.Conn[#library.Conn + 1] = input.Changed:Connect(function()
                 if input.UserInputState == Enum.UserInputState.End then
-                    drag = false
+                    Dragging = false
                 end
             end)
         end
     end)
 
-    library.Conn[#library.Conn + 1] = tb.InputChanged:Connect(function(input)
+    library.Conn[#library.Conn + 1] = topbarobject.InputChanged:Connect(function(input)
         if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
-            dragInput = input
+            DragInput = input
         end
     end)
 
     library.Conn[#library.Conn + 1] = uis.InputChanged:Connect(function(input)
-        if input == dragInput and drag then
-            update(input)
+        if input == DragInput and Dragging then
+            Update(input)
         end
     end)
 end
